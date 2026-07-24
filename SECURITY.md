@@ -25,6 +25,42 @@ unscrubbed. A trap permanently poisons the adapter, and the shared instance is
 scrubbed by snapshot-and-restore before any further operation runs; hosts using
 `./raw` directly must discard a trapped instance themselves.
 
+## What publication is gated on
+
+`deno task publish:check` refuses to publish unless all of the following hold,
+each verified offline and read-only:
+
+- `wasm.lock.json` declares an `origin` this repository knows how to verify. An
+  origin is a routing key into a set of verifiers, not a claim that is trusted
+  on its own; supporting a new supply chain means adding a verifier.
+- For the vendored-submodule origin: `.gitmodules` points at the upstream the
+  lock names, the submodule is checked out at the pinned commit, and this
+  repository's recorded gitlink is that same commit — so a fresh clone
+  reproduces the reviewed source tree.
+- Both committed copies of the artifact (`src/opaque.wasm`, which is what the
+  package ships, and `vendor/opaque.wasm`, the build output of record) hash to
+  the `sha256` and `byteLength` the lock records.
+- The package actually ships that artifact and the lock describing it.
+- `releasePending` is explicitly `false` — a human sign-off on that specific
+  (origin, commit, sha256) triple.
+- The full-memory secret probe above passes against the binary that ships, along
+  with the export, custom-section, and ABI checks that `artifact:check` runs.
+
+The honest limit: this proves the pinned source and the reviewed bytes, but it
+does not re-run Zig and Binaryen, so it cannot prove the shipped binary was
+produced from that source. Only `mise run build-wasm` with the pinned toolchain
+establishes that link, and it is the check that catches a drifted compiler. Nor
+is any of this a barrier against a compromised maintainer: the lock and the
+submodule pin live in the same repository and move in the same commit. Its value
+is that every provenance claim becomes falsifiable and lands in a reviewable
+diff. Nothing here verifies a signature — the upstream tag is annotated but
+unsigned — and edits to the vendored working tree are invisible to it, which is
+tolerable only because the shipped WASM is committed and hash-checked.
+
+Running the gate requires a real git working tree with the submodule
+initialized, from the primary worktree; an exported tarball or a linked
+`git worktree` fails closed rather than skipping the check.
+
 ## Deployment requirements
 
 Applications must also use HTTPS, persistent independent secrets, durable

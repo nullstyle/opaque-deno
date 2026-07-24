@@ -1,9 +1,10 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "artifact": "vendor/opaque.wasm",
+  "publishedArtifact": "src/opaque.wasm",
   "origin": "vendored-submodule",
   "vendoredPath": "vendor/opaque-zig",
-  "releasePending": true,
+  "releasePending": false,
   "upstream": {
     "repository": "https://github.com/nullstyle/opaque-zig",
     "tag": "v0.3.2",

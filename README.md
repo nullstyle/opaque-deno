@@ -92,6 +92,8 @@ The WASM is built from the pinned `opaque-zig` `v0.3.2` submodule and reproduces
 the recorded checksum. That candidate passes this package's full-memory secret
 probe — see [SECURITY.md](SECURITY.md) — which through v0.3.1 found ephemeral
 secrets left in the WASM shadow stack. `deno task publish:check` runs the probe
-on every publish attempt. Publication remains gated on consuming a signed
-upstream release asset rather than a locally built one (`origin` in
-`wasm.lock.json`).
+on every publish attempt, alongside the artifact and provenance checks described
+in [SECURITY.md](SECURITY.md): the shipped binary must hash to the value
+`wasm.lock.json` records, and the `opaque-zig` submodule must be pinned — both
+in the working checkout and in this repository's recorded gitlink — at the
+commit the lock names.

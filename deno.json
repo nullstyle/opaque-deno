@@ -36,7 +36,7 @@
     "ci:package": "deno task check && deno task test && deno task doc && deno publish --dry-run --allow-dirty",
     "ci": "deno task ci:package && deno task fixture:bare && deno task fixture:fresh",
     "release:check": "deno run --allow-read=. tools/check_release.ts",
-    "publish:check": "deno task release:check && deno publish --dry-run --allow-dirty"
+    "publish:check": "deno task artifact:check && deno task release:check && deno publish --dry-run --allow-dirty"
   },
   "lint": {
     "rules": {
