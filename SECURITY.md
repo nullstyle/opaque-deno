@@ -41,8 +41,11 @@ each verified offline and read-only:
   package ships, and `vendor/opaque.wasm`, the build output of record) hash to
   the `sha256` and `byteLength` the lock records.
 - The package actually ships that artifact and the lock describing it.
-- `releasePending` is explicitly `false` — a human sign-off on that specific
-  (origin, commit, sha256) triple.
+- `signedOff` names the exact commit and `sha256` a human reviewed, and both
+  still match what the tree ships. Every other check compares two things inside
+  this repository, so a rebuild makes them agree again by construction; this one
+  goes stale the moment the pin or the bytes change, and a stale sign-off blocks
+  publication until someone reviews the new artifact and records it.
 - The full-memory secret probe above passes against the binary that ships, along
   with the export, custom-section, and ABI checks that `artifact:check` runs.
 

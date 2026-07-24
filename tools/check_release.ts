@@ -14,7 +14,7 @@ import {
 const MIN_MATCH = 16;
 
 /** The `wasm.lock.json` schema this gate knows how to verify. */
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 const root = new URL("../", import.meta.url);
 
@@ -26,7 +26,8 @@ type Lock = {
   publishedArtifact: string;
   origin: string;
   vendoredPath?: string;
-  releasePending?: boolean;
+  /** The reviewed (commit, sha256) pair; stale the moment either changes. */
+  signedOff?: { commit: string; sha256: string };
   sha256: string;
   byteLength: number;
   upstream: {
@@ -95,13 +96,30 @@ await gate(async () => {
   await verify(lock);
 });
 
+// The one condition a rebuild cannot satisfy for you. Every other check
+// compares two things that live in this repository, so a rebuild makes them
+// self-consistent again by construction; this one names the exact bytes a
+// human reviewed, and goes stale the moment either of them changes.
 await gate(() => {
-  if (lock.releasePending !== false) {
+  const signedOff = lock.signedOff;
+  if (signedOff === undefined) {
     throw new Error(
-      `wasm.lock.json has releasePending: true — this pin is not signed off ` +
-        `for release. Review upstream.commit ${lock.upstream.commit} ` +
-        `(${lock.upstream.tag}) and sha256 ${lock.sha256}, then set ` +
-        `"releasePending": false in the same commit that ships them.`,
+      `wasm.lock.json records no signedOff block, so nothing attests that a ` +
+        `human reviewed what this publishes. Review upstream.commit ` +
+        `${lock.upstream.commit} (${lock.upstream.tag}) and sha256 ` +
+        `${lock.sha256}, then record both under "signedOff".`,
+    );
+  }
+  if (
+    signedOff.commit !== lock.upstream.commit ||
+    signedOff.sha256 !== lock.sha256
+  ) {
+    throw new Error(
+      `the sign-off in wasm.lock.json is stale: it covers commit ` +
+        `${signedOff.commit} and sha256 ${signedOff.sha256}, but the tree ` +
+        `ships commit ${lock.upstream.commit} (${lock.upstream.tag}) and ` +
+        `sha256 ${lock.sha256}. Review the artifact this actually publishes, ` +
+        `then update "signedOff" in the same commit that ships it.`,
     );
   }
 });
