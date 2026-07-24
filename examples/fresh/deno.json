@@ -1,0 +1,76 @@
+{
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "check": "deno fmt --check . && deno lint . && deno check",
+    "dev": "vite",
+    "build": "vite build",
+    "start": "deno serve -A _fresh/server.js",
+    "e2e": "deno test -A e2e/auth_test.ts"
+  },
+  "exclude": [
+    "**/_fresh/*"
+  ],
+  "imports": {
+    "@/": "./",
+    "@nullstyle/opaque": "../../src/mod.ts",
+    "@nullstyle/opaque/client": "../../src/client.ts",
+    "@nullstyle/opaque/fresh": "../../src/fresh.ts",
+    "@nullstyle/opaque/testing": "../../src/testing.ts",
+    "@nullstyle/paseto": "../../../paseto-deno/mod.ts",
+    "@nullstyle/paseto/fresh": "../../../paseto-deno/fresh.ts",
+    "@nullstyle/paseto/testing": "../../../paseto-deno/testing.ts",
+    "@fresh/plugin-vite": "jsr:@fresh/plugin-vite@1.1.2",
+    "fresh": "jsr:@fresh/core@2.3.3",
+    "preact": "npm:preact@10.29.4",
+    "playwright": "npm:playwright@1.61.1",
+    "vite": "npm:vite@7.3.6",
+    "vite-plugin-wasm": "npm:vite-plugin-wasm@3.5.0"
+  },
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.asynciterable",
+      "dom.iterable",
+      "deno.ns"
+    ],
+    "jsx": "precompile",
+    "jsxImportSource": "preact",
+    "jsxPrecompileSkipElements": [
+      "a",
+      "body",
+      "button",
+      "div",
+      "fieldset",
+      "form",
+      "h1",
+      "h2",
+      "head",
+      "html",
+      "input",
+      "label",
+      "link",
+      "main",
+      "meta",
+      "p",
+      "section",
+      "span",
+      "strong",
+      "title"
+    ],
+    "types": [
+      "vite/client"
+    ]
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
+  },
+  "fmt": {
+    "proseWrap": "always",
+    "semiColons": true
+  }
+}

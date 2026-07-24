@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Node dependencies (examples)
+node_modules/
+
+# Fresh (Vite) build output
+examples/fresh/_fresh/
+
+# Zig build artifacts inside the vendored opaque-zig submodule
+vendor/opaque-zig/.zig-cache/
+vendor/opaque-zig/.zig-global-cache/
+vendor/opaque-zig/zig-out/

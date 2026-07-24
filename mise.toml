@@ -1,0 +1,8 @@
+[tools]
+deno = "2.9.1"
+
+[tasks.ci]
+run = "deno task ci"
+
+[tasks.package]
+run = "deno task ci:package"

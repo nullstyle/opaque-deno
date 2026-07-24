@@ -1,0 +1,22 @@
+{
+  "imports": {
+    "@nullstyle/opaque": "../../src/mod.ts",
+    "@nullstyle/opaque/client": "../../src/client.ts",
+    "@nullstyle/opaque/testing": "../../src/testing.ts",
+    "@nullstyle/paseto": "../../../paseto-deno/mod.ts",
+    "@nullstyle/paseto/testing": "../../../paseto-deno/testing.ts"
+  },
+  "tasks": {
+    "check": "deno fmt --check && deno lint && deno check app.ts server.ts cookie_worker.ts integration_test.ts",
+    "test": "deno test --allow-read=../.. --allow-net=127.0.0.1 integration_test.ts",
+    "start": "deno run --allow-read=../.. --allow-net=127.0.0.1 server.ts"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended", "jsr"]
+    }
+  },
+  "compilerOptions": {
+    "lib": ["deno.window", "deno.ns", "deno.unstable", "dom", "dom.iterable"]
+  }
+}

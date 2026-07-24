@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "artifact": "vendor/opaque.wasm",
+  "origin": "local-pinned-build",
+  "releasePending": true,
+  "upstream": {
+    "repository": "https://github.com/nullstyle/opaque-zig",
+    "tag": "v0.3.0",
+    "commit": "7e37414602f2696e11a8f7d0871af616e010a3a5",
+    "wasmAbiVersion": 5,
+    "zigVersion": "0.17.0-dev.1252+e4b325c19",
+    "optimize": "ReleaseSafe",
+    "workingTree": "dirty",
+    "testExports": false,
+    "licenses": ["MIT", "Apache-2.0"]
+  },
+  "postProcessing": {
+    "tool": "wasm-opt",
+    "binaryenVersion": "130",
+    "flags": ["-Oz", "--strip-debug", "--strip-producers"],
+    "input": {
+      "sha256": "197b26e85154632152ec68a5a53b48ee0bbb30bcccef8129ff76c5ee96666fef",
+      "byteLength": 2310233
+    }
+  },
+  "sha256": "f7e0998259991660c3fa5bcff0080d79462e38115b2ac8bc40759bb13d1c4079",
+  "byteLength": 263724,
+  "hardening": {
+    "linearMemoryScrubVerified": false,
+    "blocker": "The v0.3.0 candidate retains the OPRF blind and registration-start state in internal linear-memory copies after reset."
+  },
+  "requiredExports": [
+    "memory",
+    "allocate",
+    "free",
+    "resetAllocator",
+    "version",
+    "registrationRequestLen",
+    "registrationResponseLen",
+    "registrationRecordLen",
+    "ke1Len",
+    "ke2Len",
+    "ke3Len",
+    "serverKeyPairLen",
+    "registrationStart",
+    "registrationFinish",
+    "serverRegistrationResponse",
+    "serverKeyPair",
+    "serverCreateFakeRecord",
+    "loginStart",
+    "loginFinish",
+    "serverLoginStart",
+    "serverLoginFinish"
+  ],
+  "forbiddenExports": [
+    "__stack_pointer",
+    "registrationFinishIdentityTestVector",
+    "loginFinishIdentityTestVector",
+    "serverLoginStartIdentityTestVector"
+  ],
+  "forbiddenCustomSections": [
+    "name",
+    "producers",
+    ".debug_abbrev",
+    ".debug_info",
+    ".debug_line",
+    ".debug_line_str",
+    ".debug_loc",
+    ".debug_loclists",
+    ".debug_ranges",
+    ".debug_rnglists",
+    ".debug_str"
+  ]
+}

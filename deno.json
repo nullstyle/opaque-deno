@@ -1,0 +1,51 @@
+{
+  "name": "@nullstyle/opaque",
+  "version": "0.1.0-beta.1",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/mod.ts",
+    "./client": "./src/client.ts",
+    "./fresh": "./src/fresh.ts",
+    "./kv": "./src/kv.ts",
+    "./raw": "./src/raw.ts",
+    "./testing": "./src/testing.ts"
+  },
+  "publish": {
+    "include": [
+      "src/**/*.ts",
+      "src/opaque.wasm",
+      "README.md",
+      "SECURITY.md",
+      "LICENSE",
+      "wasm.lock.json"
+    ],
+    "exclude": [
+      "src/worker_test.ts"
+    ]
+  },
+  "tasks": {
+    "artifact": "deno run --allow-read=../.. --allow-write=. tools/generate_wasm.ts",
+    "artifact:check": "deno run --allow-read=. tools/generate_wasm.ts --check",
+    "check": "deno task artifact:check && deno fmt --check && deno lint && deno check --unstable-kv src/mod.ts src/client.ts src/fresh.ts src/kv.ts src/raw.ts src/testing.ts",
+    "test": "deno test --allow-read --allow-net=127.0.0.1 --unstable-kv tests",
+    "test:real": "deno test --allow-read --allow-net=127.0.0.1 tests/real_wasm_test.ts",
+    "doc": "deno doc --lint src/mod.ts src/client.ts src/fresh.ts src/kv.ts src/raw.ts src/testing.ts",
+    "fixture:bare": "deno task --cwd=examples/bare check && deno task --cwd=examples/bare test",
+    "fixture:fresh": "deno task --cwd=examples/fresh check && deno task --cwd=examples/fresh build && deno task --cwd=examples/fresh e2e",
+    "ci:package": "deno task check && deno task test && deno task doc && deno publish --dry-run --allow-dirty",
+    "ci": "deno task ci:package && deno task fixture:bare && deno task fixture:fresh",
+    "release:check": "deno run --allow-read=. tools/check_release.ts",
+    "publish:check": "deno task release:check && deno publish --dry-run --allow-dirty"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended", "jsr"]
+    }
+  },
+  "fmt": {
+    "exclude": ["src/artifact.ts"]
+  },
+  "compilerOptions": {
+    "lib": ["deno.window", "deno.ns", "deno.unstable", "dom", "dom.iterable"]
+  }
+}
