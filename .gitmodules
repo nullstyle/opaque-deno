@@ -1,0 +1,3 @@
+[submodule "vendor/opaque-zig"]
+	path = vendor/opaque-zig
+	url = https://github.com/nullstyle/opaque-zig.git

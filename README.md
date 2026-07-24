@@ -53,9 +53,9 @@ session key is wiped and never exposed by the high-level API.
 `createOpaqueFreshMiddleware(auth)` adapts the same web-standard handler to a
 Fresh middleware function without taking a runtime dependency on Fresh. Order
 middleware as: CSRF protection, OPAQUE routes, then session authentication. Only
-import `@nullstyle/opaque/client` from islands; it has no server secret or
-embedded WASM payload. The worker fetches the immutable, hash-versioned WASM
-asset from the auth handler.
+import `@nullstyle/opaque/client` from islands; it has no server secret and no
+WASM bundled in. The worker fetches the immutable, hash-versioned WASM asset
+from the auth handler.
 
 ## Storage and sessions
 
@@ -68,19 +68,26 @@ Identifiers are exact UTF-8 by default. Pass one `canonicalizeIdentifier`
 callback if the application has a documented normalization policy; it is applied
 before every storage operation.
 
-Advanced consumers can use the ABI adapter from `./raw`. The vendored raw WASM
-is retained for provenance checks in this repository but excluded from JSR; the
-published server code contains a deterministic gzip/base64 payload. The pinned
-Binaryen 130 pipeline reduces the served module from 2,310,233 to 263,724 bytes
-and the generated TypeScript payload from about 679 KB to 134 KB.
+Advanced consumers can use the ABI adapter from `./raw`. The WASM ships as the
+real `src/opaque.wasm` binary (loaded with a static `import`); JSR publishes
+that file, not the submodule source. It is built from the vendored `opaque-zig`
+source under `vendor/opaque-zig` — a git submodule pinned to tag `v0.3.1` — by
+`mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen 130
+`wasm-opt -Oz` pipeline (2,310,233 → 263,724 bytes) and re-verifies the result
+against `wasm.lock.json`. The committed `src/opaque.wasm` is the source of
+truth; `deno task check` verifies it without needing the Zig toolchain.
 
-Licensed under MIT. The embedded `opaque-zig` artifact is available under MIT OR
+To rebuild, run `git submodule update --init` once, then `mise run build-wasm`.
+Reproducing the byte-identical binary requires Zig `0.17.0-dev.1252+e4b325c19`
+on PATH (opaque-zig tracks the Zig `0.17.0-dev` line, which mise cannot pin
+exactly) plus Binaryen 130.
+
+Licensed under MIT. The `opaque-zig` artifact is available under MIT OR
 Apache-2.0; see `wasm.lock.json` for exact provenance.
 
-The current beta checkout pins a reproducible local build while the v0.3.0
-GitHub release asset is pending. `deno task publish:check` deliberately fails
-until that official asset is downloaded, verified, and recorded in the lock. The
-pinned candidate also retains an ephemeral OPRF blind and registration-start
-state in internal WASM linear-memory copies after allocator reset. The release
-check reproduces this issue and will continue blocking publication until an
-upstream artifact passes the full-memory probe.
+The WASM is built from the pinned `opaque-zig` `v0.3.1` submodule and reproduces
+the recorded checksum. Publication is still blocked: the pinned candidate
+retains an ephemeral OPRF blind and registration-start state in internal WASM
+linear-memory copies after allocator reset. `deno task publish:check` reproduces
+this issue and will continue blocking publication until an upstream release
+passes the full-memory probe.

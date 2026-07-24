@@ -10,6 +10,7 @@
     "./raw": "./src/raw.ts",
     "./testing": "./src/testing.ts"
   },
+  "exclude": ["vendor/opaque-zig"],
   "publish": {
     "include": [
       "src/**/*.ts",

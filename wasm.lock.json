@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "artifact": "vendor/opaque.wasm",
-  "origin": "local-pinned-build",
+  "origin": "vendored-submodule",
+  "vendoredPath": "vendor/opaque-zig",
   "releasePending": true,
   "upstream": {
     "repository": "https://github.com/nullstyle/opaque-zig",
-    "tag": "v0.3.0",
-    "commit": "7e37414602f2696e11a8f7d0871af616e010a3a5",
+    "tag": "v0.3.1",
+    "commit": "2a01c583feab964642fdbad6ce9461816de157a5",
     "wasmAbiVersion": 5,
     "zigVersion": "0.17.0-dev.1252+e4b325c19",
     "optimize": "ReleaseSafe",
-    "workingTree": "dirty",
     "testExports": false,
     "licenses": ["MIT", "Apache-2.0"]
   },

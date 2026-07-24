@@ -6,3 +6,11 @@ run = "deno task ci"
 
 [tasks.package]
 run = "deno task ci:package"
+
+# On-demand: rebuild the OPAQUE WASM from the vendored opaque-zig submodule.
+# Needs Zig 0.17.0-dev.1252 on PATH + mise-pinned Binaryen 130 (see the script
+# and wasm.lock.json). Not part of `ci`/`package`, which stay pure-Deno and only
+# verify the committed src/opaque.wasm against wasm.lock.json.
+[tasks.build-wasm]
+description = "Rebuild the OPAQUE WASM from the vendored opaque-zig submodule"
+run = "bash tools/build_wasm.sh"
