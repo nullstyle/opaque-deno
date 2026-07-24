@@ -71,11 +71,14 @@ before every storage operation.
 Advanced consumers can use the ABI adapter from `./raw`. The WASM ships as the
 real `src/opaque.wasm` binary (loaded with a static `import`); JSR publishes
 that file, not the submodule source. It is built from the vendored `opaque-zig`
-source under `vendor/opaque-zig` — a git submodule pinned to tag `v0.3.1` — by
+source under `vendor/opaque-zig` — a git submodule pinned to tag `v0.3.2` — by
 `mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen 130
-`wasm-opt -Oz` pipeline (2,310,233 → 263,724 bytes) and re-verifies the result
+`wasm-opt -Oz` pipeline (2,310,767 → 263,399 bytes) and re-verifies the result
 against `wasm.lock.json`. The committed `src/opaque.wasm` is the source of
 truth; `deno task check` verifies it without needing the Zig toolchain.
+
+Each instance reserves 20.6 MiB of WASM linear memory, nearly all of it the
+Argon2id working set. Server-side operations share one instance per isolate.
 
 To rebuild, run `git submodule update --init` once, then `mise run build-wasm`.
 Reproducing the byte-identical binary requires Zig `0.17.0-dev.1252+e4b325c19`
@@ -85,9 +88,10 @@ exactly) plus Binaryen 130.
 Licensed under MIT. The `opaque-zig` artifact is available under MIT OR
 Apache-2.0; see `wasm.lock.json` for exact provenance.
 
-The WASM is built from the pinned `opaque-zig` `v0.3.1` submodule and reproduces
-the recorded checksum. Publication is still blocked: the pinned candidate
-retains an ephemeral OPRF blind and registration-start state in internal WASM
-linear-memory copies after allocator reset. `deno task publish:check` reproduces
-this issue and will continue blocking publication until an upstream release
-passes the full-memory probe.
+The WASM is built from the pinned `opaque-zig` `v0.3.2` submodule and reproduces
+the recorded checksum. That candidate passes this package's full-memory secret
+probe — see [SECURITY.md](SECURITY.md) — which through v0.3.1 found ephemeral
+secrets left in the WASM shadow stack. `deno task publish:check` runs the probe
+on every publish attempt. Publication remains gated on consuming a signed
+upstream release asset rather than a locally built one (`origin` in
+`wasm.lock.json`).

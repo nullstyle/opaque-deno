@@ -6,8 +6,8 @@
   "releasePending": true,
   "upstream": {
     "repository": "https://github.com/nullstyle/opaque-zig",
-    "tag": "v0.3.1",
-    "commit": "2a01c583feab964642fdbad6ce9461816de157a5",
+    "tag": "v0.3.2",
+    "commit": "949208b45762ea9d7e9f891c4e6547a48614a230",
     "wasmAbiVersion": 5,
     "zigVersion": "0.17.0-dev.1252+e4b325c19",
     "optimize": "ReleaseSafe",
@@ -19,15 +19,16 @@
     "binaryenVersion": "130",
     "flags": ["-Oz", "--strip-debug", "--strip-producers"],
     "input": {
-      "sha256": "197b26e85154632152ec68a5a53b48ee0bbb30bcccef8129ff76c5ee96666fef",
-      "byteLength": 2310233
+      "sha256": "69b88cd5f2a98f5ad944b6830be53ad2c9c9ddf96682a7f0348defed250a9067",
+      "byteLength": 2310767
     }
   },
-  "sha256": "f7e0998259991660c3fa5bcff0080d79462e38115b2ac8bc40759bb13d1c4079",
-  "byteLength": 263724,
+  "sha256": "4d5617817d98628d8db556f30191be1244cc3ba36e277bd08e83e97e3432ec2d",
+  "byteLength": 263399,
   "hardening": {
-    "linearMemoryScrubVerified": false,
-    "blocker": "The v0.3.0 candidate retains the OPRF blind and registration-start state in internal linear-memory copies after reset."
+    "linearMemoryScrubVerified": true,
+    "verification": "Independently re-verified against this exact vendored build: a full register+login lifecycle through all nine production exports leaves no 16-byte window of any input, output, or derived secret anywhere in linear memory after resetAllocator. The same probe finds 82 residues in v0.3.1 (including the server private key and both exportKeys, all in the shadow-stack region below the old 1 MiB stack top), so it is not vacuous. Reproduce with `deno task release:check`.",
+    "trapPathCaveat": "Unchanged upstream: a WebAssembly trap leaves memory unscrubbed and poisons the instance. OpaqueInstancePool recovers by snapshot/restore on that path only; the normal path relies on the upstream scrub."
   },
   "requiredExports": [
     "memory",

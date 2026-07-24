@@ -9,7 +9,9 @@
 #   - The vendor/opaque-zig submodule (this script initializes it).
 #   - Zig 0.17.0-dev.1252+e4b325c19 on PATH (e.g. via zvm, or a manual install).
 #     mise cannot pin an exact 0.17.0-dev build; a different Zig can change the
-#     output bytes. See wasm.lock.json / README.md.
+#     output bytes. See wasm.lock.json / README.md. Upstream records the same
+#     build as OPAQUE_PINNED_ZIG and asserts it via `mise run zig-pin-check`,
+#     which can be run inside vendor/opaque-zig to confirm the match.
 #   - mise, which provides the pinned Binaryen 130 `wasm-opt`.
 #
 set -euo pipefail
