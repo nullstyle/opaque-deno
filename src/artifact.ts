@@ -2,10 +2,10 @@
 /** Pinned opaque-zig WASM ABI version. */
 export const OPAQUE_WASM_ABI_VERSION: number = 5;
 /** SHA-256 of the uncompressed production artifact. */
-export const OPAQUE_WASM_SHA256: string = "4d5617817d98628d8db556f30191be1244cc3ba36e277bd08e83e97e3432ec2d";
+export const OPAQUE_WASM_SHA256: string = "e920ceed4058b52edb677f284e67e4e97fd04b9f367de33f7909ec9125e17ce9";
 /** Byte length of the uncompressed production artifact. */
-export const OPAQUE_WASM_BYTE_LENGTH: number = 263399;
+export const OPAQUE_WASM_BYTE_LENGTH: number = 263442;
 /** Short immutable artifact content identifier. */
-export const OPAQUE_WASM_ARTIFACT_ID: string = "4d5617817d98628d";
+export const OPAQUE_WASM_ARTIFACT_ID: string = "e920ceed4058b52e";
 /** Build the hash-versioned asset path under an auth prefix. */
 export const opaqueWasmAssetPath = (prefix: string = "/api/auth"): string => `${prefix.replace(/\/$/, "")}/opaque.${OPAQUE_WASM_ARTIFACT_ID}.wasm`;

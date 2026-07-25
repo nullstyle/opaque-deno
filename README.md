@@ -71,11 +71,11 @@ before every storage operation.
 Advanced consumers can use the ABI adapter from `./raw`. The WASM ships as the
 real `src/opaque.wasm` binary (loaded with a static `import`); JSR publishes
 that file, not the submodule source. It is built from the vendored `opaque-zig`
-source under `vendor/opaque-zig` — a git submodule pinned to `v0.3.2-2-ga177f83`
-— by `mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen
-130 `wasm-opt -Oz` pipeline (2,310,767 → 263,399 bytes) and re-verifies the
-result against `wasm.lock.json`. The committed `src/opaque.wasm` is the source
-of truth; `deno task check` verifies it without needing the Zig toolchain.
+source under `vendor/opaque-zig` — a git submodule pinned to tag `v0.3.3` — by
+`mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen 130
+`wasm-opt -Oz` pipeline (2,311,033 → 263,442 bytes) and re-verifies the result
+against `wasm.lock.json`. The committed `src/opaque.wasm` is the source of
+truth; `deno task check` verifies it without needing the Zig toolchain.
 
 Each instance reserves 20.6 MiB of WASM linear memory, nearly all of it the
 Argon2id working set. Server-side operations share one instance per isolate.

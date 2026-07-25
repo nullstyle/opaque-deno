@@ -5,13 +5,13 @@
   "origin": "vendored-submodule",
   "vendoredPath": "vendor/opaque-zig",
   "signedOff": {
-    "commit": "a177f8375279b88e42abf6095b453b0782b09a38",
-    "sha256": "4d5617817d98628d8db556f30191be1244cc3ba36e277bd08e83e97e3432ec2d"
+    "commit": "dfaa761263285d5e0af0203a3c05be2b9d7e9f78",
+    "sha256": "e920ceed4058b52edb677f284e67e4e97fd04b9f367de33f7909ec9125e17ce9"
   },
   "upstream": {
     "repository": "https://github.com/nullstyle/opaque-zig",
-    "tag": "v0.3.2-2-ga177f83",
-    "commit": "a177f8375279b88e42abf6095b453b0782b09a38",
+    "tag": "v0.3.3",
+    "commit": "dfaa761263285d5e0af0203a3c05be2b9d7e9f78",
     "wasmAbiVersion": 5,
     "zigVersion": "0.17.0-dev.1252+e4b325c19",
     "optimize": "ReleaseSafe",
@@ -23,12 +23,12 @@
     "binaryenVersion": "130",
     "flags": ["-Oz", "--strip-debug", "--strip-producers"],
     "input": {
-      "sha256": "69b88cd5f2a98f5ad944b6830be53ad2c9c9ddf96682a7f0348defed250a9067",
-      "byteLength": 2310767
+      "sha256": "5807198105034bf56892f9906d9645c7e021a9bed970ad9d4ad00effbfb0749b",
+      "byteLength": 2311033
     }
   },
-  "sha256": "4d5617817d98628d8db556f30191be1244cc3ba36e277bd08e83e97e3432ec2d",
-  "byteLength": 263399,
+  "sha256": "e920ceed4058b52edb677f284e67e4e97fd04b9f367de33f7909ec9125e17ce9",
+  "byteLength": 263442,
   "hardening": {
     "linearMemoryScrubVerified": true,
     "verification": "Independently re-verified against this exact vendored build: a full register+login lifecycle through all nine production exports leaves no 16-byte window of any input, output, or derived secret anywhere in linear memory after resetAllocator. The same probe finds 82 residues in v0.3.1 (including the server private key and both exportKeys, all in the shadow-stack region below the old 1 MiB stack top), so it is not vacuous. Reproduce with `deno task release:check`.",

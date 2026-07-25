@@ -6,7 +6,7 @@ be represented as production-safe.
 
 ## Linear-memory secret scrubbing
 
-The pinned `opaque-zig` v0.3.2 candidate passes this package's full-memory
+The pinned `opaque-zig` v0.3.3 candidate passes this package's full-memory
 probe. `deno task publish:check` drives a complete register + login lifecycle
 through all nine production exports and scans the whole of WASM linear memory
 after each one; no 16-byte window of any input, output, or derived secret
@@ -19,6 +19,13 @@ exported linear memory: deep call frames kept copies that neither the arena wipe
 nor the handlers' explicit zeroing reached. Upstream v0.3.2 zeroes the entire
 shadow-stack region in `resetAllocator`. The same probe reports 82 residues
 against v0.3.1 and none against v0.3.2, so it is a live check, not a formality.
+
+Upstream v0.3.3 additionally rejects an invalid server public key encoding in a
+registration response. Before it, a corrupted or tampered response produced a
+record that registered successfully and could then never authenticate — a
+silently broken credential rather than an error at the point of tampering. It is
+not an authentication bypass (the record is unusable, not forgeable), and it was
+found by the differential fuzzing described below.
 
 One caveat is unchanged upstream: a WebAssembly **trap** leaves linear memory
 unscrubbed. A trap permanently poisons the adapter, and the shared instance is
