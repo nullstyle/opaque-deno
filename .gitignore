@@ -11,3 +11,6 @@ examples/fresh/_fresh/
 vendor/opaque-zig/.zig-cache/
 vendor/opaque-zig/.zig-global-cache/
 vendor/opaque-zig/zig-out/
+
+# Differential-fuzzing oracle binary (built on demand; needs Go)
+tools/difffuzz/oracle-go/oracle
