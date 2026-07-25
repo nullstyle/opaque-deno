@@ -49,6 +49,14 @@ each verified offline and read-only:
 - The full-memory secret probe above passes against the binary that ships, along
   with the export, custom-section, and ABI checks that `artifact:check` runs.
 
+Separately from the publish gate, `deno task difffuzz` cross-checks the shipped
+binary against an independent OPAQUE implementation
+(`github.com/bytemare/opaque`): registration compared byte-for-byte and login
+cross-executed in both directions. It is not on the publish path because it
+needs a Go toolchain, and it runs upstream as a release gate on `opaque-zig`
+itself. Unlike everything above, it does not let this implementation define what
+correct means.
+
 The honest limit: this proves the pinned source and the reviewed bytes, but it
 does not re-run Zig and Binaryen, so it cannot prove the shipped binary was
 produced from that source. Only `mise run build-wasm` with the pinned toolchain

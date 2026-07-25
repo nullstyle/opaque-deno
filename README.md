@@ -71,11 +71,11 @@ before every storage operation.
 Advanced consumers can use the ABI adapter from `./raw`. The WASM ships as the
 real `src/opaque.wasm` binary (loaded with a static `import`); JSR publishes
 that file, not the submodule source. It is built from the vendored `opaque-zig`
-source under `vendor/opaque-zig` — a git submodule pinned to tag `v0.3.2` — by
-`mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen 130
-`wasm-opt -Oz` pipeline (2,310,767 → 263,399 bytes) and re-verifies the result
-against `wasm.lock.json`. The committed `src/opaque.wasm` is the source of
-truth; `deno task check` verifies it without needing the Zig toolchain.
+source under `vendor/opaque-zig` — a git submodule pinned to `v0.3.2-2-ga177f83`
+— by `mise run build-wasm`, which runs `zig build wasm` plus the pinned Binaryen
+130 `wasm-opt -Oz` pipeline (2,310,767 → 263,399 bytes) and re-verifies the
+result against `wasm.lock.json`. The committed `src/opaque.wasm` is the source
+of truth; `deno task check` verifies it without needing the Zig toolchain.
 
 Each instance reserves 20.6 MiB of WASM linear memory, nearly all of it the
 Argon2id working set. Server-side operations share one instance per isolate.
@@ -88,12 +88,12 @@ exactly) plus Binaryen 130.
 Licensed under MIT. The `opaque-zig` artifact is available under MIT OR
 Apache-2.0; see `wasm.lock.json` for exact provenance.
 
-The WASM is built from the pinned `opaque-zig` `v0.3.2` submodule and reproduces
-the recorded checksum. That candidate passes this package's full-memory secret
-probe — see [SECURITY.md](SECURITY.md) — which through v0.3.1 found ephemeral
-secrets left in the WASM shadow stack. `deno task publish:check` runs the probe
-on every publish attempt, alongside the artifact and provenance checks described
-in [SECURITY.md](SECURITY.md): the shipped binary must hash to the value
+The WASM is built from the pinned `opaque-zig` submodule and reproduces the
+recorded checksum. That candidate passes this package's full-memory secret probe
+— see [SECURITY.md](SECURITY.md) — which through v0.3.1 found ephemeral secrets
+left in the WASM shadow stack. `deno task publish:check` runs the probe on every
+publish attempt, alongside the artifact and provenance checks described in
+[SECURITY.md](SECURITY.md): the shipped binary must hash to the value
 `wasm.lock.json` records, and the `opaque-zig` submodule must be pinned — both
 in the working checkout and in this repository's recorded gitlink — at the
 commit the lock names.

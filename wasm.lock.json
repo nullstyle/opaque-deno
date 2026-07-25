@@ -5,13 +5,13 @@
   "origin": "vendored-submodule",
   "vendoredPath": "vendor/opaque-zig",
   "signedOff": {
-    "commit": "949208b45762ea9d7e9f891c4e6547a48614a230",
+    "commit": "a177f8375279b88e42abf6095b453b0782b09a38",
     "sha256": "4d5617817d98628d8db556f30191be1244cc3ba36e277bd08e83e97e3432ec2d"
   },
   "upstream": {
     "repository": "https://github.com/nullstyle/opaque-zig",
-    "tag": "v0.3.2",
-    "commit": "949208b45762ea9d7e9f891c4e6547a48614a230",
+    "tag": "v0.3.2-2-ga177f83",
+    "commit": "a177f8375279b88e42abf6095b453b0782b09a38",
     "wasmAbiVersion": 5,
     "zigVersion": "0.17.0-dev.1252+e4b325c19",
     "optimize": "ReleaseSafe",

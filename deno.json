@@ -35,8 +35,8 @@
     "fixture:fresh": "deno task --cwd=examples/fresh check && deno task --cwd=examples/fresh build && deno task --cwd=examples/fresh e2e",
     "ci:package": "deno task check && deno task test && deno task doc && deno publish --dry-run --allow-dirty",
     "ci": "deno task ci:package && deno task fixture:bare && deno task fixture:fresh",
-    "difffuzz": "deno run --allow-read=. --allow-run=tools/difffuzz/oracle-go/oracle tools/difffuzz/difffuzz.ts",
-    "difffuzz:build": "cd tools/difffuzz/oracle-go && go build -o oracle .",
+    "difffuzz": "OPAQUE_WASM_PATH=src/opaque.wasm deno run --allow-read=. --allow-env=OPAQUE_WASM_PATH --allow-run=vendor/opaque-zig/tools/difffuzz/oracle-go/oracle vendor/opaque-zig/tools/difffuzz/difffuzz.ts",
+    "difffuzz:build": "cd vendor/opaque-zig/tools/difffuzz/oracle-go && go build -o oracle .",
     "release:check": "deno run --allow-read=. tools/check_release.ts",
     "publish:check": "deno task artifact:check && deno task release:check && deno publish --dry-run --allow-dirty"
   },
